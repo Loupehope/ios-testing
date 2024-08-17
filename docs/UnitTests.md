@@ -162,3 +162,74 @@ final class TracksAnalyticsMock: TracksAnalytics {
     }
 }
 ```
+4. Создаем файл с тестами в unit-тестовом бандле. Описываем в нем все требуемые моки и саму тестируемую сущность. Блоки setUp и tearDown вызываются для каждого теста!
+```swift
+import XCTest
+import UIKit
+
+@testable import iOSTesting
+
+final class NativeAnalyticsViewControllerTests: XCTestCase {
+    private var analyticsServiceMock: TracksAnalyticsMock!
+    private var contentViewMock: DisplaysAnalyticsViewMock!
+    private var analyticsViewController: AnalyticsViewController!
+
+    override func setUp() {
+        super.setUp()
+
+        analyticsServiceMock = TracksAnalyticsMock()
+        contentViewMock = DisplaysAnalyticsViewMock()
+
+        analyticsViewController = AnalyticsViewController(analyticsService: analyticsServiceMock)
+        analyticsViewController.contentView = contentViewMock
+    }
+
+    override func tearDown() {
+        analyticsServiceMock = nil
+        contentViewMock = nil
+        analyticsViewController = nil
+
+        super.tearDown()
+    }
+}
+```
+5. Далее уже создаем тесты для каждого метода в analyticsViewController
+```swift
+import XCTest
+import UIKit
+
+@testable import iOSTesting
+
+final class NativeAnalyticsViewControllerTests: XCTestCase {
+    // Тестируем дефолтные значения контроллера
+    func testInit() {
+        // when
+        analyticsViewController = AnalyticsViewController()
+        // then
+        XCTAssertTrue(type(of: analyticsViewController.contentView) == AnalyticsView.self)
+        XCTAssertIdentical(analyticsViewController.analyticsService, AnalyticsService.shared)
+    }
+
+    // Тестируем, что View устанавливается в контроллер
+    func testLoadView() {
+        // when
+        analyticsViewController.loadView()
+        // then
+        XCTAssertIdentical(analyticsViewController.view, contentViewMock)
+    }
+
+    // Проверяем настройку View и вызовы аналитики
+    func testViewDidLoad() {
+        // given
+        let expectedViewModel = AnalyticsView.ViewModel(buttonTitle: "Analytics!")
+        let expectedEvent = "View did load!"
+        // when
+        analyticsViewController.viewDidLoad()
+        // then
+        XCTAssertEqual(analyticsServiceMock.trackEventWasCalled, 1)
+        XCTAssertEqual(analyticsServiceMock.trackEventReceivedEvent, expectedEvent)
+        XCTAssertEqual(contentViewMock.configureWasCalled, 1)
+        XCTAssertEqual(contentViewMock.configureReceivedViewModel, expectedViewModel)
+    }
+}
+```
