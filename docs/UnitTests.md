@@ -75,6 +75,8 @@ final class TracksAnalyticsMock: TracksAnalytics {
 
 ###  <a name="example"></a> Пример реализации
 
+* Готовый код тестов можно посмотреть в [iOSTestingUnitTests](../iOSTestingUnitTests/NativeUnitTests.swift).
+
 Дано:
 - Есть некоторый контроллер AnalyticsViewController, в котором есть логика настройки View и вызова сервиса аналитики
 - Хотим протестировать, что View конфигурируется корректными параметрами
