@@ -30,7 +30,7 @@
 ###  <a name="example"></a> Пример реализации
 
 Дано:
-- Хотим проверить верстку некоторой вьюхи [AnalyticsView с кнопкой по центру](iOSTesting/AnalyticsViewController.swift#L17)
+- Хотим проверить верстку некоторой вьюхи [AnalyticsView с кнопкой по центру](../iOSTesting/AnalyticsViewController.swift#L17)
 - Хотим понять, что констрейнты выставлены правильно
 - Хотим увидеть поведение кнопки с разной длинной текста
 - Будем использовать swift-snapshot-testing для тестирования
@@ -44,7 +44,7 @@ final class AnalyticsView: UIView {
 ```
 
 Что надо сделать:
-1. Создаем [класс в бандле с unit-тестами](iOSTestingUnitTests/SnapshotUnitTests.swift)
+1. Создаем [класс в бандле с unit-тестами](../iOSTestingUnitTests/SnapshotUnitTests.swift)
 ```swift
 import UIKit
 import SnapshotTesting
@@ -54,7 +54,7 @@ import XCTest
 
 final class AnalyticsViewSnapshotTests: XCTestCase { }
 ```
-2. Добавляем в этот класс информацию о нашей вьюхе и [методы для создания вью и её очистки](iOSTestingUnitTests/SnapshotUnitTests.swift#L15) для каждого теста
+2. Добавляем в этот класс информацию о нашей вьюхе и [методы для создания вью и её очистки](../iOSTestingUnitTests/SnapshotUnitTests.swift#L15) для каждого теста
 ```swift
 final class AnalyticsViewSnapshotTests: XCTestCase {
     private var view: AnalyticsView! // Объект вьюхи
@@ -71,7 +71,7 @@ final class AnalyticsViewSnapshotTests: XCTestCase {
     }
 }
 ```
-3. Добавляем [два теста для проверки поведения кнопки](iOSTestingUnitTests/SnapshotUnitTests.swift#L30)
+3. Добавляем [два теста для проверки поведения кнопки](../iOSTestingUnitTests/SnapshotUnitTests.swift#L30)
 ```swift
 final class AnalyticsViewSnapshotTests: XCTestCase {
     // Настройка вьюхи
@@ -91,5 +91,5 @@ final class AnalyticsViewSnapshotTests: XCTestCase {
     }
 }
 ```
-4. Теперь достаточно прогнать тесты - в первый раз они упадут, так как только [запишуться эталенные снепшоты](iOSTestingUnitTests/__Snapshots__/SnapshotUnitTests), которые можно проверить на корректность
+4. Теперь достаточно прогнать тесты - в первый раз они упадут, так как только [запишуться эталенные снепшоты](../iOSTestingUnitTests/__Snapshots__/SnapshotUnitTests), которые можно проверить на корректность
 5. Если всё ок, то полученный результат можно коммитеть. Теперь в следующий раз, если кто-то поправит констрейнты или цвет кнопки, то снепшоты тесты упадут, так как не совпадут с эталоном
