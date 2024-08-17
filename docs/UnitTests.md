@@ -241,7 +241,7 @@ final class NativeAnalyticsViewControllerTests: XCTestCase {
 
 * Готовый код тестов можно посмотреть в [iOSTestingUnitTests](../iOSTestingUnitTests/QuickNimbleUnitTests.swift)
 
-Quick/Nimble - это [BDD фреймворк](https://en.wikipedia.org/wiki/Behavior-driven_development), который позволяет описать тест в категориях - given, when, then:
+Quick/Nimble - это [BDD фреймворк](https://en.wikipedia.org/wiki/Behavior-driven_development), который позволяет описать тест в категориях - given, when, then (describe, context, it - в контексте фреймворка). Детали фреймворка можно посмотреть в самом репозитории проекта.
 ```swift
 import XCTest
 import UIKit
