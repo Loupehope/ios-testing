@@ -1,7 +1,8 @@
 # Unit-тесты
 1. [Общая информация](#basic)
 2. [Библиотеки](#libs)
-3. [Пример реализации](#example)
+3. [Пример реализации на XCTest](#example1)
+4. [Пример реализации на Quick/Nimble](#example2)
 
 ### <a name="basic"></a> Unit-тесты - проверяют методы, функции, свойства объектов
 
@@ -73,9 +74,9 @@ final class TracksAnalyticsMock: TracksAnalytics {
 - [XCTest](https://developer.apple.com/documentation/XCTest) - библиотека от Apple. Все остальные билиотеки - надстройки над ней.
 - [Quick/Nimble](https://github.com/Quick/Nimble) - фреймворк, которые позволяет писать тесты удобнее и лаконичнее. Обычно он используется на проектах.
 
-###  <a name="example"></a> Пример реализации
+###  <a name="example1"></a> Пример реализации на XCTest
 
-* Готовый код тестов можно посмотреть в [iOSTestingUnitTests](../iOSTestingUnitTests/NativeUnitTests.swift).
+* Готовый код тестов можно посмотреть в [iOSTestingUnitTests](../iOSTestingUnitTests/NativeUnitTests.swift)
 
 Дано:
 - Есть некоторый контроллер AnalyticsViewController, в котором есть логика настройки View и вызова сервиса аналитики
@@ -232,6 +233,48 @@ final class NativeAnalyticsViewControllerTests: XCTestCase {
         XCTAssertEqual(analyticsServiceMock.trackEventReceivedEvent, expectedEvent)
         XCTAssertEqual(contentViewMock.configureWasCalled, 1)
         XCTAssertEqual(contentViewMock.configureReceivedViewModel, expectedViewModel)
+    }
+}
+```
+
+###  <a name="example2"></a> Пример реализации на Quick/Nimble
+
+* Готовый код тестов можно посмотреть в [iOSTestingUnitTests](../iOSTestingUnitTests/QuickNimbleUnitTests.swift)
+
+Quick/Nimble - это [BDD фреймворк](https://en.wikipedia.org/wiki/Behavior-driven_development), который позволяет описать тест в категориях - given, when, then:
+```swift
+import XCTest
+import UIKit
+
+@testable import iOSTesting
+
+final class NativeAnalyticsViewControllerTests: XCTestCase {
+    // MARK: - БЫЛО
+    func testViewDidLoad() {
+        let expectedViewModel = AnalyticsView.ViewModel(buttonTitle: "Analytics!")
+        let expectedEvent = "View did load!"
+
+        analyticsViewController.viewDidLoad()
+
+        XCTAssertEqual(analyticsServiceMock.trackEventWasCalled, 1)
+        XCTAssertEqual(analyticsServiceMock.trackEventReceivedEvent, expectedEvent)
+        XCTAssertEqual(contentViewMock.configureWasCalled, 1)
+        XCTAssertEqual(contentViewMock.configureReceivedViewModel, expectedViewModel)
+    }
+
+    // MARK: - СТАЛО
+    describe(".viewDidLoad") {
+        it("should call analytics service") {
+            let expectedViewModel = AnalyticsView.ViewModel(buttonTitle: "Analytics!")
+            let expectedEvent = "View did load!"
+
+            analyticsViewController.viewDidLoad()
+
+            expect(analyticsServiceMock.trackEventWasCalled).to(equal(1))
+            expect(analyticsServiceMock.trackEventReceivedEvent).to(equal(expectedEvent))
+            expect(contentViewMock.configureWasCalled).to(equal(1))
+            expect(contentViewMock.configureReceivedViewModel).to(equal(expectedViewModel))
+        }
     }
 }
 ```
